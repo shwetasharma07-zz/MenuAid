@@ -39,21 +39,14 @@ class Menu:
             print(dish.ingredients)
             
             
-    def getDish(self, dishName):
-        if(self.dishes.count(dishName)):
-            return self.dishes.get(dishName)
-        else:
-            print("Dish not found!")
-            return " "
-     
-    def findAll(items):
-        result = list()
+    def getDish(self, name):
+        name = str(name)
         for dish in self.dishes:
-            for ingredient in dish:
-                for item in items:
-                    if(str(ingredient).count(item) > 0):
-                        result.append(dish)
-                        continue
-        return result                        
+            if(dish.dishName.strip().lower() == name.strip().lower()):
+                return dish
+        print("Dish not found!")
+        return -1
+     
+                   
 
 

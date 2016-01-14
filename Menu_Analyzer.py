@@ -1,5 +1,6 @@
 import json
 import requests
+from Simplify import *
 
 ####### Shweta! --> Head over to the end of the document for the main program and the options. I suggest you collapse all also. ###################
 
@@ -12,7 +13,7 @@ class Ingredient:
     def __init__(self, itemDict):
         
         #print("creating new object")
-        self.name = str(itemDict['Name'])
+        self.name = str(itemDict['Name']).lower().strip()
         
 
     def __str__(self):
@@ -24,12 +25,12 @@ class Ingredient:
 class Dish:
 
     def __init__(self, dishName, ingredients):
-        self.dishName = str(dishName)
+        self.dishName = str(dishName).lower().strip()
         self.ingredients = ingredients
 
     def __str__(self):
         if(self.ingredients==-1):
-            return "NOT FOUND"
+            return "NO RECIPE FOUND"
         return self.dishName
 
     def __repr__(self):
@@ -37,6 +38,12 @@ class Dish:
             return "NO RECIPE FOUND"
         return self.dishName
         
+    def contains(self, item):
+        for ingredient in self.ingredients:
+            if (Simplify.match(ingredient,item)):
+                return 1
+        return 0        
+       
 
 
 ## returns a list of ingredients given a RecipeID
@@ -45,7 +52,7 @@ def getIngredientsFromRecipeID(dishID):
         
     #url url used to look up the ingredients given a dishID.
     url = "http://api.bigoven.com/recipe/" + str(dishID) + "?api_key=" + apiKey
-
+#http://api.bigoven.com/recipe/167626?api_key=3eSo7F2R4Z7ID4E6vT7u79S4c8qRLFk7
     
     #print("INGREDIENT SEARCH URL:\t"+url)
     
@@ -69,13 +76,13 @@ def getIngredientsFromRecipeID(dishID):
         
 
     #print("INGREDIENTS for dish with RecipeID "+str(dishID)+" are : \t"+ str(ingredientList))
-
+    
     return ingredientList
-
+#http://api.bigoven.com/recipes?pg=1&rpp=25&title_kw=pizza&api_key=3eSo7F2R4Z7ID4E6vT7u79S4c8qRLFk7&sort=quality
 def getDishIdFromName(dishName):
     
     #Used to find the RecipeID of a given Dish name.
-    url = "http://api.bigoven.com/recipes?pg=1&rpp=25&title_kw="+ dishName.lower() + "&api_key="+apiKey
+    url = "http://api.bigoven.com/recipes?pg=1&rpp=25&title_kw="+ dishName.lower() + "&api_key="+apiKey +"&sort=quality"
     
     #print("dish SEARCH URL:\t"+url)
 
@@ -99,6 +106,10 @@ def getDishIdFromName(dishName):
     #print("RECIPE ID RESULT FOR STR "+dishName+": \t"+str(data['Results'][0]['RecipeID']))
 
     return data['Results'][0]['RecipeID']
+
+def getIngredientsFromName(dishName):
+    return getIngredientsFromRecipeID(getDishIdFromName(dishName.strip().lower()))
+
 
 
 ## returns the ingredients required for this recipe
