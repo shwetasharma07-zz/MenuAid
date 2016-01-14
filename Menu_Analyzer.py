@@ -29,14 +29,14 @@ class Dish:
 
     def __str__(self):
         if(self.ingredients==-1):
-            return "\n"+self.dishName + ":\n" + "NO RECIPE FOUND"+"\n"
-        return "\n"+self.dishName + ":\n" + str(self.ingredients)+"\n"
+            return "NOT FOUND"
+        return self.dishName
 
     def __repr__(self):
         if(self.ingredients==-1):
-            return "\n"+self.dishName + ":\n" + "NO RECIPE FOUND"+"\n"
-        return "\n"+self.dishName + ":\n" + str(self.ingredients)+"\n"
-
+            return "NO RECIPE FOUND"
+        return self.dishName
+        
 
 
 ## returns a list of ingredients given a RecipeID
@@ -122,12 +122,12 @@ def getIngredientList(dishName):
 def createDishList(listOfDishNames):
 
     #for now its a list. TODO: make it the right data structure.
-    Menu = list()
+    dishList = list()
 
     for dishName in listOfDishNames:
         newDish = Dish(dishName, getIngredientList(dishName))
-        Menu.append(newDish)
-    return Menu;
+        dishList.append(newDish)
+    return dishList;
 
 
 
