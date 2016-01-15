@@ -38,12 +38,12 @@ class Dish:
             return "NO RECIPE FOUND"
         return self.dishName
         
-    def contains(self, item):
+    def containsSome(self, category):
         for ingredient in self.ingredients:
-            if (Simplify.match(ingredient,item)):
+            if (match(ingredient,category)):
                 return 1
         return 0        
-       
+      
 
 
 ## returns a list of ingredients given a RecipeID
@@ -117,8 +117,9 @@ def getIngredientList(dishName):
 
     id = getDishIdFromName(dishName)
     if(id == -1):
-        print("Cannot find a Recipe for "+ dishName+" in BigOven's database")
+        #print("Cannot find a Recipe for "+ dishName+" in BigOven's database")
         ingredients = -1
+        return -1
     else:
         ingredients = getIngredientsFromRecipeID(id)
         #print(ingredients)
@@ -137,7 +138,10 @@ def createDishList(listOfDishNames):
 
     for dishName in listOfDishNames:
         newDish = Dish(dishName, getIngredientList(dishName))
-        dishList.append(newDish)
+        #print(str(newDish)+" ; INGREDIENTS: "+str(newDish.ingredients))
+        if(newDish.ingredients!=-1):
+            dishList.append(newDish)
+            print(str(len(dishList))+" items in menu")
     return dishList;
 
 

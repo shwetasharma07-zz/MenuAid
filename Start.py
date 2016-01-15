@@ -1,9 +1,16 @@
 from Menu import *
 from Menu_Analyzer import *
+from ReadMenu import *
 
 print("\nProgram Start\n")
 
-menuADT = Menu('menuTextFile.txt')
+URL = input("input URL: \t")
+URL = "'"+URL+"'"
+listOfLines = readMenuItems(URL)
+#"'http://www.greenislecare.com/sample-menu.jpg'"
+print(listOfLines)
+
+menuADT = Menu(listOfLines)
 
 
 
@@ -26,12 +33,14 @@ def processInstructionString(instr):
 def processInstruction(instr):
     print("Instruction:\t"+str(instr))
     #return a list of all the dish objects with containing the given items (either names or ingredients)
+    if(instr[0]== "menu"):
+        print("The Recognized dishes in this menu are: \t" + str(menuADT.dishes))
     
     if(instr[0]=="findall"):
         result = list()
         for dish in menuADT.dishes:
             for element in instr[1]:
-                if(dish.contains(str(element))):
+                if(dish.containsSome(str(element))):
                     result.append(dish)
         print(result)
         return result     
@@ -48,7 +57,7 @@ def processInstruction(instr):
         result = menuADT.dishes
         for dish in menuADT.dishes:
             for element in instr[1]:
-                if(dish.contains(str(element))):
+                if(dish.containsSome(str(element))):
                     result.remove(dish)
         print(result)
         return result
@@ -64,11 +73,11 @@ def processInstruction(instr):
                 newDish = Dish(dishName, getIngredientList(dishName))
                 menuADT.dishes.append(newDish)
 
-print("The Recognized dishes in this menu are: \t" + str(menuADT.dishes))
+
 instruction = input("Please enter an instruction.\n")
 while(instruction != "exit"):
 
-    print(str(menuADT.dishes))
+    #print(str(menuADT.dishes))
     processInstruction(processInstructionString(instruction))
         
     

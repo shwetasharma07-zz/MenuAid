@@ -13,18 +13,20 @@ class Menu:
         #print(menuString)
         return menuString
     
-    def getDishNamesListFromString(menuString):
-        listOfNames = menuString.split(",")
-        return listOfNames
+    
 
 
-    def __init__(self, filePath):
-        print("Menu constructor\n")
-        self.filePath = str(filePath)
-        self.menuString = Menu.getStrFromTextFile(self.filePath)
-        #listOfDishNames = processMenuImage(menuTextFilePath)
-        self.listOfDishNames = Menu.getDishNamesListFromString(self.menuString)
-        self.dishes = createDishList(self.listOfDishNames)
+    def __init__(self, menuString):
+        print("Constructing Menu.")
+        #print("BEFORE Simplifying\n"+str(menuString)+"\n")
+        
+        self.menuString = simplifyMenu(menuString)
+        
+        #print(str(self.menuString))
+        
+        
+        self.dishes = createDishList(self.menuString)
+    
         
         
     def __str__(self):

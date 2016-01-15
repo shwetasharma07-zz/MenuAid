@@ -9,11 +9,11 @@ headers = {
     'Ocp-Apim-Subscription-Key': '7dd603b705df4c1790ba46d36d8a3458',
 }
 
+#http://www.greenislecare.com/sample-menu.jpg
 
-
-def ReadMenuItems():
+def readMenuItems(URL):
     conn = http.client.HTTPSConnection('api.projectoxford.ai')
-    conn.request("POST", "/vision/v1/ocr", "{'Url': 'http://www.greenislecare.com/sample-menu.jpg'}", headers)
+    conn.request("POST", "/vision/v1/ocr", "{'Url': "+URL+"}", headers)
     response = conn.getresponse()
 
     data = response.read().decode('utf-8')
@@ -26,41 +26,29 @@ def ReadMenuItems():
     #print(obj["regions"][0]["lines"][1]  ['words'][0]['text'], obj["regions"][0]["lines"][1]['words'][1]['text'])
     
     menuList = list()
+    k=0
+    menu = obj['regions']
+    for region in menu:
     
-    region = obj["regions"][0]["lines"]
-    j = 0
-    regionText = ""
-    for line in region:
-        ####ONE LINE###
-        line = obj["regions"][0]['lines'][j]['words']
-        i = 0
-        lineText = ""
-        for word in line:
-            lineText +=(" "+line[i]['text'])
-            i = i + 1
-        print(lineText+";")
-        menuList.append(lineText)
-        ########
-        j = j + 1
-
-
-
-
-
-
-
-  #  secondLine = obj["regions"][0]["lines"][0]
+        region = obj["regions"][k]["lines"]
+        j = 0
     
-
-   # for i in range(0, secondLine.size()-1):
- #       word = obj["regions"][0]["lines"][i]
- #       print(word)
+        for line in region:
+            ####ONE LINE###
+            line = obj["regions"][k]['lines'][j]['words']
+            i = 0
+            lineText = ""
+            for word in line:
+                lineText +=(" "+str(line[i]['text']).lower())
+                i = i + 1
+            #print(lineText)
+            
+            ########
+            j = j + 1
+            menuList.append(lineText)
+        k = k + 1
+        #menuList.append(lineText)
     
-    #print(line)
-   # print(obj['regions'][0]['lines'][1]['words'][0]['text'])
+    return menuList
 
-    
 
-ReadMenuItems()
-
-####################################
